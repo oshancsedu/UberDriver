@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fbutton="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MapsActivity">
+
+    <android.support.v4.widget.DrawerLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/drawer">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/app_bar"
+                layout="@layout/app_bar" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.sifat.Custom.CustomMapFragmment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <!-- Destination Panel -->
+                <LinearLayout
+                    android:id="@+id/llDistPanel"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentBottom="true"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    android:padding="2dp">
+
+
+                    <info.hoang8f.widget.FButton
+                        android:textColor="@color/white"
+                        android:typeface="serif"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:text="@string/online"
+                        fbutton:buttonColor="@color/red_600"
+                        fbutton:shadowColor="@color/red_900"
+                        fbutton:shadowEnabled="true"
+                        fbutton:shadowHeight="5dp"
+                        fbutton:cornerRadius="15dp"/>
+
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivMarker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/myposition" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <android.support.design.widget.NavigationView
+            android:id="@+id/navigation"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            app:headerLayout="@layout/nvheader"
+            app:itemIconTint="#333"
+            app:itemTextColor="#333"
+            app:menu="@menu/map_navigation_drawer_items" />
+
+    </android.support.v4.widget.DrawerLayout>
+
+
+</LinearLayout>

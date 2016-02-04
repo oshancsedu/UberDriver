@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Uber Driver</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="sharedPref">uber.driver</string>
+    <string name="offline"><b>GO OFFLINE</b></string>
+    <string name="online"><b>GO ONLINE</b></string>
+    <string name="accept">ACCEPT</string>
+    <string name="reject">REJECT</string>
+</resources>
