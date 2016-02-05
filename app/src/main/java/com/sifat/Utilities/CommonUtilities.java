@@ -28,11 +28,12 @@ public class CommonUtilities {
     public static final String SELECTED_USER_ID = "selectedUserId";
     public static final String NOTIFICATION_MANAGER = "notificationManager";
     public static final String IS_ON_HIRE = "isOnHire";
+    public static final String IS_ONLINE = "driverStatus";
     public static final String HIRE_STATUS_MESSAGE = "hireStatus";
 
     public static SharedPreferences getSharedPref(Context context)
     {
-        SharedPreferences sharedPreferences= context.getSharedPreferences(String.valueOf(R.string.sharedPref), Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getResources().getString(R.string.sharedPref), Context.MODE_PRIVATE);
         return sharedPreferences;
     }
 

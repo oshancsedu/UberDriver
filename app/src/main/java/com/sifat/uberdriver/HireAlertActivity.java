@@ -86,6 +86,8 @@ public class HireAlertActivity extends ActionBarActivity implements
     private MediaPlayer mediaPlayer;
     private Vibrator vibrator;
     private Intent intent;
+    private NotificationManager notificationManager;
+    private NotificationCompat.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -162,9 +164,10 @@ public class HireAlertActivity extends ActionBarActivity implements
         getRoute(srcLatLng, distLatLng);
         setSrcDistMarker();
         mediaPlayer.start();
+        Notify();
         timer.start();
         long[] pattern = {0, 600, 1000};
-        vibrator.vibrate(pattern,0);
+        vibrator.vibrate(pattern, 0);
     }
 
     //UI settings of map
@@ -244,6 +247,7 @@ public class HireAlertActivity extends ActionBarActivity implements
     private void finishTimer() {
         mediaPlayer.stop();
         mediaPlayer.release();
+        notificationManager.cancel(NOTIFICATION_ID);
         vibrator.cancel();
         HireAlertActivity.this.finish();
         if(wakeLock.isHeld())
@@ -281,6 +285,32 @@ public class HireAlertActivity extends ActionBarActivity implements
 
     }
 
+    @Override
+    public void onBackPressed() {
+    }
+
+    public void Notify() {
+        String message = "Ongoing Call...";
+        notificationManager = (NotificationManager)
+                this.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent intent = new Intent(this, HireAlertActivity.class);
+        //bundle.putParcelable(NOTIFICATION_MANAGER, (Parcelable) mNotificationManager);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.notificationicon)
+                .setContentTitle("GoBar")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setOngoing(true)
+                .setContentText(message).setSound(sound).setLights(Color.CYAN, 1, 1).setVibrate(new long[]{100, 100, 100, 100, 100});
+        builder.setContentIntent(contentIntent);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
+
     private class TimeRemines extends CountDownTimer
     {
 
@@ -301,24 +331,4 @@ public class HireAlertActivity extends ActionBarActivity implements
             finishTimer();
         }
     }
-
-    /*public void Notify() {
-        notificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
-        Intent intent = new Intent(this, DriverTaxiStatus.class);
-        //bundle.putParcelable(NOTIFICATION_MANAGER, (Parcelable) mNotificationManager);
-
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-
-        builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.notificationicon)
-                .setContentTitle("GoBar")
-                .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(message))
-                .setContentText(message).setSound(sound).setLights(Color.CYAN, 1, 1).setVibrate(new long[]{100, 100, 100, 100, 100});
-
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
-    }*/
 }

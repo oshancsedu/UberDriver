@@ -207,7 +207,6 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
         finish();
     }
 
-
     @Override
     public void onClick(View view) {
         userRating.show(getFragmentManager(), "Rate the Driver");

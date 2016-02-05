@@ -9,9 +9,9 @@
     tools:context=".MapsActivity">
 
     <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/drawer">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,25 +37,26 @@
                     android:id="@+id/llDistPanel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentBottom="true"
                     android:orientation="horizontal"
-                    android:weightSum="10"
-                    android:padding="2dp">
+                    android:padding="2dp"
+                    android:weightSum="10">
 
 
                     <info.hoang8f.widget.FButton
+                        android:id="@+id/btStatus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/online"
                         android:textColor="@color/white"
                         android:typeface="serif"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:text="@string/online"
                         fbutton:buttonColor="@color/red_600"
+                        fbutton:cornerRadius="15dp"
                         fbutton:shadowColor="@color/red_900"
                         fbutton:shadowEnabled="true"
-                        fbutton:shadowHeight="5dp"
-                        fbutton:cornerRadius="15dp"/>
+                        fbutton:shadowHeight="5dp" />
 
 
                 </LinearLayout>

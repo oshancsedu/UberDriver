@@ -74,6 +74,7 @@ public class OnRideService extends IntentService {
         Intent intent = new Intent(this, DriverTaxiStatus.class);
         //bundle.putParcelable(NOTIFICATION_MANAGER, (Parcelable) mNotificationManager);
         intent.putExtras(bundle);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
         Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -83,12 +84,16 @@ public class OnRideService extends IntentService {
                 .setContentTitle("GoBar")
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(message))
-                .setContentText(message).setSound(sound).setLights(Color.CYAN, 1, 1).setVibrate(new long[]{100, 100, 100, 100, 100});
+                .setOngoing(true)
+                .setContentText(message).setSound(sound).setLights(Color.CYAN, 1, 1)
+                .setVibrate(new long[]{100, 100, 100, 100, 100});
+
         if (isHired) {
             editor.putString(SELECTED_USER_NAME, userName);
             editor.putString(SELECTED_USER_ID, userID);
             editor.putFloat(SELECTED_USER_RATING, userRating);
             editor.putBoolean(IS_ON_HIRE, isHired);
+            editor.putBoolean(IS_ONLINE, false);
             editor.commit();
             builder.setContentIntent(contentIntent);
         }
