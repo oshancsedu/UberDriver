@@ -34,8 +34,9 @@ public class HireCallService extends IntentService {
             e.printStackTrace();
         }
 
-        srcLatLng = new LatLng(23.89,91.67);
-        srcLatLng = new LatLng(23.89,92.67);
+        latlngs = new Bundle();
+        srcLatLng = new LatLng(23.748311, 90.379986);
+        distLatLng = new LatLng(23.748232, 90.369944);
         latlngs.putParcelable(SRC_LATLNG, srcLatLng);
         latlngs.putParcelable(DIST_LATLNG, distLatLng);
 
@@ -49,7 +50,5 @@ public class HireCallService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.e("Service", "Stopping");
-        showToast(this, "Stopping");
     }
 }

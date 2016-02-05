@@ -4,9 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
+import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.View;
@@ -26,6 +28,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.sifat.Custom.CustomMapFragmment;
 import com.sifat.Utilities.LocationProvider;
 import com.skyfishjy.library.RippleBackground;
@@ -58,7 +61,10 @@ public class HireAlertActivity extends ActionBarActivity implements
     private TextView tvTimeRemains;
     private int sec;
     private Bundle latlngBundle;
-    LatLng srcLatLng,distLatLng;
+    private LatLng srcLatLng,distLatLng;
+    private Marker srcMarker, distMarker;
+    private MediaPlayer mediaPlayer;
+    private Vibrator vibrator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +81,8 @@ public class HireAlertActivity extends ActionBarActivity implements
 
     private void init() {
 
+        vibrator= (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
+        mediaPlayer = MediaPlayer.create(this, R.raw.rigntone);
         rippleBackground=(RippleBackground)findViewById(R.id.content);
         sharedPreferences = getSharedPref(this);
         editor = sharedPreferences.edit();
@@ -124,14 +132,18 @@ public class HireAlertActivity extends ActionBarActivity implements
         mMap.setMyLocationEnabled(true);
         mMap.setBuildingsEnabled(true);
         mMap.setOnMarkerClickListener(this);
-        getRoute(srcLatLng, distLatLng);
 
         rippleBackground.startRippleAnimation();
         mUiSettings = mMap.getUiSettings();
         mapUiSetting(true);
         locationProvider = new LocationProvider(this, mMap, editor, sharedPreferences);
         locationProvider.getMyLocaton();
+        getRoute(srcLatLng, distLatLng);
+        setSrcDistMarker();
+        mediaPlayer.start();
         timer.start();
+        long[] pattern = {0, 600, 1000};
+        vibrator.vibrate(pattern,0);
     }
 
     //UI settings of map
@@ -145,19 +157,35 @@ public class HireAlertActivity extends ActionBarActivity implements
         mUiSettings.setRotateGesturesEnabled(flag);
     }
 
+    private void setSrcDistMarker() {
+        srcMarker = mMap.addMarker(new MarkerOptions()
+                .position(srcLatLng)
+                .title("Starting Point")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.srcmarker)));
+        distMarker = mMap.addMarker(new MarkerOptions()
+                .position(distLatLng)
+                .title("Destination Point")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.distmarker)));
+    }
+
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
+        boolean flag = sharedPreferences.getBoolean("flag", true);
+        boolean initMarker = sharedPreferences.getBoolean("init", true);
+        if (!flag && initMarker)
+            locationProvider.finish();
 
     }
 
     @Override
     public void onCusTouchUp() {
-        rippleBackground.startRippleAnimation();
+        //rippleBackground.startRippleAnimation();
     }
 
     @Override
     public void onCusTouchDown() {
-        rippleBackground.stopRippleAnimation();
+        if(rippleBackground.isRippleAnimationRunning())
+            rippleBackground.stopRippleAnimation();
     }
 
     @Override
@@ -182,6 +210,9 @@ public class HireAlertActivity extends ActionBarActivity implements
     }
 
     private void finishTimer() {
+        mediaPlayer.stop();
+        mediaPlayer.release();
+        vibrator.cancel();
         HireAlertActivity.this.finish();
         if(wakeLock.isHeld())
             wakeLock.release();
