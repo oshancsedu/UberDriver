@@ -105,9 +105,11 @@ public class MapsActivity extends ActionBarActivity implements
     @Override
     public void onCameraChange(CameraPosition cameraPosition) {
 
+        boolean flag = sharedpreferences.getBoolean("flag", true);
+        boolean initMarker = sharedpreferences.getBoolean("init", true);
+        if (!flag && initMarker)
+            locationProvider.finish();
     }
-
-
 
     @Override
     public void onCusTouchUp() {

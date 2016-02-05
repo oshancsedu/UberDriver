@@ -1,15 +1,20 @@
 package com.sifat.uberdriver;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.media.MediaPlayer;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PowerManager;
 import android.os.Vibrator;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -30,12 +35,27 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sifat.Custom.CustomMapFragmment;
+import com.sifat.Service.OnRideService;
 import com.sifat.Utilities.LocationProvider;
 import com.skyfishjy.library.RippleBackground;
 
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+
+import android.app.IntentService;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Parcelable;
+import android.support.v7.app.NotificationCompat;
+import android.util.Log;
 
 import static com.sifat.Utilities.CommonUtilities.*;
 
@@ -65,6 +85,7 @@ public class HireAlertActivity extends ActionBarActivity implements
     private Marker srcMarker, distMarker;
     private MediaPlayer mediaPlayer;
     private Vibrator vibrator;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -205,6 +226,17 @@ public class HireAlertActivity extends ActionBarActivity implements
         if(v.getId()==R.id.btAccept)
         {
             timer.cancel();
+            intent = new Intent(HireAlertActivity.this, OnRideService.class);
+
+            String message = "OK";
+            latlngBundle.putString(SELECTED_USER_NAME, "Sifat Oshan");
+            latlngBundle.putString(SELECTED_USER_ID, "U54274");
+            latlngBundle.putString(SELECTED_USER_MOBILE, "0167x xxxxxx");
+            latlngBundle.putFloat(SELECTED_USER_RATING, 3.5f);
+            latlngBundle.putString(HIRE_STATUS_MESSAGE, message);
+
+            intent.putExtras(latlngBundle);
+            startService(intent);
             finishTimer();
         }
     }
@@ -269,4 +301,24 @@ public class HireAlertActivity extends ActionBarActivity implements
             finishTimer();
         }
     }
+
+    /*public void Notify() {
+        notificationManager = (NotificationManager)
+                this.getSystemService(Context.NOTIFICATION_SERVICE);
+        Intent intent = new Intent(this, DriverTaxiStatus.class);
+        //bundle.putParcelable(NOTIFICATION_MANAGER, (Parcelable) mNotificationManager);
+
+        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+
+        builder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.notificationicon)
+                .setContentTitle("GoBar")
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(message))
+                .setContentText(message).setSound(sound).setLights(Color.CYAN, 1, 1).setVibrate(new long[]{100, 100, 100, 100, 100});
+
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }*/
 }

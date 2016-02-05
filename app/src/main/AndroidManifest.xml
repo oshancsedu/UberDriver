@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sifat.uberdriver" >
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.VIBRATE"/>
     <!--
@@ -31,11 +32,12 @@
             android:value="@string/google_maps_key" />
 
         <service android:name="com.sifat.Service.HireCallService" />
+        <service android:name="com.sifat.Service.OnRideService" />
 
         <activity
             android:name=".MapsActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_maps" >
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -45,6 +47,9 @@
 
         <activity
             android:name=".HireAlertActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DriverTaxiStatus"
             android:screenOrientation="portrait"/>
 
     </application>
