@@ -159,9 +159,9 @@ public class HireAlertActivity extends ActionBarActivity implements
         rippleBackground.startRippleAnimation();
         mUiSettings = mMap.getUiSettings();
         mapUiSetting(true);
-        locationProvider = new LocationProvider(this, mMap, editor, sharedPreferences);
+        locationProvider = new LocationProvider(this, mMap, editor, sharedPreferences, srcLatLng, distLatLng);
         locationProvider.getMyLocaton();
-        getRoute(srcLatLng, distLatLng);
+        //getRoute(srcLatLng, distLatLng);
         setSrcDistMarker();
         mediaPlayer.start();
         Notify();
@@ -252,37 +252,6 @@ public class HireAlertActivity extends ActionBarActivity implements
         HireAlertActivity.this.finish();
         if(wakeLock.isHeld())
             wakeLock.release();
-    }
-
-
-
-    /********
-     * Get A route Between source & destination
-     ********/
-    private void getRoute(LatLng srcLatLng, LatLng distLatLng) {
-        final RouteDrawer routeDrawer = new RouteDrawer.RouteDrawerBuilder(mMap)
-                .withColor(Color.BLUE)
-                .withWidth(5)
-                .withAlpha(0.0f)
-                .withMarkerIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
-                .build();
-
-        RouteRest routeRest = new RouteRest();
-        routeRest.getJsonDirections(srcLatLng, distLatLng, TravelMode.DRIVING)
-                .observeOn(AndroidSchedulers.mainThread())
-                .map(new Func1<String, Routes>() {
-                    @Override
-                    public Routes call(String s) {
-                        return new RouteJsonParser<Routes>().parse(s, Routes.class);
-                    }
-                })
-                .subscribe(new Action1<Routes>() {
-                    @Override
-                    public void call(Routes r) {
-                        routeDrawer.drawPath(r);
-                    }
-                });
-
     }
 
     @Override

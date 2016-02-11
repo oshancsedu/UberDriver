@@ -2,14 +2,21 @@ package com.sifat.uberdriver;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,6 +32,9 @@ import com.sifat.Custom.CustomMapFragmment;
 import com.sifat.Service.HireCallService;
 import com.sifat.Utilities.LocationProvider;
 
+import java.io.IOException;
+import java.util.List;
+
 import info.hoang8f.widget.FButton;
 
 import static com.sifat.Utilities.CommonUtilities.*;
@@ -33,7 +43,7 @@ public class MapsActivity extends ActionBarActivity implements
         OnMapReadyCallback,
         CustomMapFragmment.OnTouchListener,
         GoogleMap.OnCameraChangeListener,
-        GoogleMap.OnMarkerClickListener, View.OnClickListener {
+        GoogleMap.OnMarkerClickListener, View.OnClickListener, SearchView.OnQueryTextListener {
 
     private GoogleMap mMap;
     private LocationProvider locationProvider;
@@ -44,6 +54,10 @@ public class MapsActivity extends ActionBarActivity implements
     private DrawerLayout dlMenu;
     private FButton btStatus;
     private boolean isOnline;
+    private SearchView searchView;
+    private List<Address> addressList;
+    private Geocoder geocoder;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,4 +189,49 @@ public class MapsActivity extends ActionBarActivity implements
         btStatus.setShadowColor(this.getResources().getColor(R.color.green_900));
         btStatus.setText(this.getResources().getString(R.string.offline));
     }
+
+    /******
+     * Menu Settings
+     ****/
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.map_navigation_drawer_items, menu);
+        MenuItem item = menu.findItem(R.id.Search);
+        searchView = (SearchView) MenuItemCompat.getActionView(item);
+        searchView.setQueryHint("Search Location");
+        searchView.setIconifiedByDefault(false);
+        searchView.setOnQueryTextListener(this);
+        searchView.setSubmitButtonEnabled(true);
+        return true;
+    }
+
+
+    /*******
+     * Search bar Operation
+     ******/
+    @Override
+    public boolean onQueryTextSubmit(String location) {
+        if (location != null && location != "") {
+            geocoder = new Geocoder(this);
+            try {
+                addressList = geocoder.getFromLocationName(location, 1);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if (addressList.size() > 0) {
+                Address address = addressList.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                //mMap.addMarker(new MarkerOptions().position(latLng).title("Marker"));
+                mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng));
+            } else
+                Toast.makeText(this, location + " not Found", Toast.LENGTH_SHORT).show();
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        return false;
+    }
+
 }

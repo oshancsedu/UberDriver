@@ -2,10 +2,16 @@ package com.sifat.Utilities;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.github.polok.routedrawer.RouteDrawer;
+import com.github.polok.routedrawer.RouteRest;
+import com.github.polok.routedrawer.model.Routes;
+import com.github.polok.routedrawer.model.TravelMode;
+import com.github.polok.routedrawer.parser.RouteJsonParser;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
@@ -14,8 +20,13 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
 
 import static com.sifat.Utilities.CommonUtilities.checkPlayServices;
 
@@ -36,6 +47,8 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
     private GoogleMap googleMap;
     private SharedPreferences.Editor editor;
     private SharedPreferences pref;
+    private LatLng srcLatlng, distLatlng;
+    private boolean isCalled;
 
     public LocationProvider(Context c, GoogleMap gmap, SharedPreferences.Editor editor, SharedPreferences sharedPreferences){
         context=c;
@@ -44,7 +57,15 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
         pref=sharedPreferences;
     }
 
-    public void getMyLocaton(){
+
+    public LocationProvider(Context c, GoogleMap gmap, SharedPreferences.Editor editor, SharedPreferences sharedPreferences, LatLng src, LatLng dist) {
+        this(c, gmap, editor, sharedPreferences);
+        srcLatlng = src;
+        distLatlng = dist;
+        isCalled = true;
+    }
+
+    public void getMyLocaton() {
         boolean flag=pref.getBoolean("flag",true);
         //Toast.makeText(context,"Get my Location "+flag,Toast.LENGTH_SHORT).show();
         if(flag)
@@ -160,12 +181,69 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
     @Override
     public void onLocationChanged(Location location) {
         mLastLocation=location;
-        getLatLng();
+        if (!isCalled)
+            getLatLng();
+        else
+            showPath();
+    }
+
+    private void showPath() {
+
+        if (mLastLocation != null) {
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+            float accuracy = mLastLocation.getAccuracy();
+            //Toast.makeText(context,"Lat : "+latitude+"\nLong : "+longitude+"\nAccuracy : "+
+            //     mLastLocation.getAccuracy() + "\nMin : "+minAccuracy,Toast.LENGTH_SHORT).show();
+
+            LatLng myLatLng = new LatLng(latitude, longitude);
+
+            if (accuracy < minAccuracy) {
+                stopLocationUpdates();
+                getRoute(myLatLng, srcLatlng);
+            }
+            showMyLocation = new CameraPosition.Builder().target(srcLatlng)
+                    .zoom(15.5f)
+                    .bearing(340)
+                    .tilt(50)
+                    .build();
+            googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(showMyLocation), 2000, null);
+
+        }
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Toast.makeText(context,"Failed to detect current location",Toast.LENGTH_SHORT).show();
         return;
+    }
+
+    /********
+     * Get A route Between source & destination
+     ********/
+    private void getRoute(LatLng srcLatLng, LatLng distLatLng) {
+        final RouteDrawer routeDrawer = new RouteDrawer.RouteDrawerBuilder(googleMap)
+                .withColor(Color.BLUE)
+                .withWidth(5)
+                .withAlpha(0.0f)
+                .withMarkerIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_YELLOW))
+                .build();
+
+        RouteRest routeRest = new RouteRest();
+        routeRest.getJsonDirections(srcLatLng, distLatLng, TravelMode.DRIVING)
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Func1<String, Routes>() {
+                    @Override
+                    public Routes call(String s) {
+                        return new RouteJsonParser<Routes>().parse(s, Routes.class);
+                    }
+                })
+                .subscribe(new Action1<Routes>() {
+                    @Override
+                    public void call(Routes r) {
+                        routeDrawer.drawPath(r);
+                    }
+                });
+
     }
 }
