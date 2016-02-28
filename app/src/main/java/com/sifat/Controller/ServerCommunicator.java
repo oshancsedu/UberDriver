@@ -72,17 +72,16 @@ public class ServerCommunicator {
     public void sendSignUpInfo() {
         final RequestParams requestParams = new RequestParams();
         requestParams.put(USER_EMAIL, signup_email);
-        requestParams.put("username", signup_mobile);
-        requestParams.put("password1", signup_password);
-        requestParams.put("password2", signup_password);
+        requestParams.put(USER_NAME, signup_username);
+        requestParams.put(USER_PASSWORD, signup_password);
 
         final String signupWebsite = SIGN_UP_WEBSITE;
-        Toast.makeText(context, signupWebsite, Toast.LENGTH_SHORT).show();
+        showToast(context, signupWebsite);
         LoopjHttpClient.post(signupWebsite, requestParams, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                showToast(context, responseBody.toString());
+                showToast(context, new String(responseBody));
             }
 
             @Override
@@ -91,6 +90,7 @@ public class ServerCommunicator {
             }
         });
     }
+
 
 
     public void completeUserInfo() {

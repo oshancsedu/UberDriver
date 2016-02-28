@@ -40,10 +40,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Phone Number" />
+            android:text="Username" />
 
         <EditText
-            android:id="@+id/etPhoneNumber"
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"

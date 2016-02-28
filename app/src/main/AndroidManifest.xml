@@ -36,7 +36,7 @@
         <service android:name="com.sifat.Service.OnRideService" />
 
         <activity
-            android:name=".MapsActivity"
+            android:name=".WelcomeActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -46,6 +46,9 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".MapsActivity"/>
+        <activity android:name=".LoginActivity"/>
+        <activity android:name=".SignupActivity"/>
         <activity
             android:name=".HireAlertActivity"
             android:screenOrientation="portrait" />

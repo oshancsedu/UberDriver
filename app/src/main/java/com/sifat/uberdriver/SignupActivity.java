@@ -10,6 +10,8 @@ import android.widget.EditText;
 
 //import com.sifat.Controller.ServerCommunicator;
 
+import com.sifat.Controller.ServerCommunicator;
+
 import static com.sifat.Utilities.CommonUtilities.*;
 
 /**
@@ -17,7 +19,7 @@ import static com.sifat.Utilities.CommonUtilities.*;
  */
 public class SignupActivity extends ActionBarActivity implements View.OnClickListener {
 
-    private EditText etEmail, etPhone, etPassword, etConfirmPassword;
+    private EditText etEmail, etUsername, etPassword, etConfirmPassword;
     private Button btSignup;
     private Toolbar toolbar;
 
@@ -30,12 +32,11 @@ public class SignupActivity extends ActionBarActivity implements View.OnClickLis
 
     private void init() {
 
-
         toolbar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
 
         etEmail = (EditText) findViewById(R.id.etEmail);
-        etPhone = (EditText) findViewById(R.id.etPhoneNumber);
+        etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
         etConfirmPassword = (EditText) findViewById(R.id.etConfirmPass);
         btSignup = (Button) findViewById(R.id.btSignUp);
@@ -46,17 +47,19 @@ public class SignupActivity extends ActionBarActivity implements View.OnClickLis
     public void onClick(View v) {
         if (v.getId() == R.id.btSignUp) {
             signup_email = etEmail.getText().toString();
-            signup_mobile = etPhone.getText().toString();
+            signup_username = etUsername.getText().toString();
             signup_password = etPassword.getText().toString();
             signup_confirmPass = etConfirmPassword.getText().toString();
 
             if (!signup_password.equals(signup_confirmPass)) {
                 showToast(this, "Password did not matched!");
-            } else if (!signup_mobile.isEmpty() && !signup_password.isEmpty() && !signup_confirmPass.isEmpty()) {
-                //ServerCommunicator serverCommunicator = new ServerCommunicator(this);
-                //serverCommunicator.sendSignUpInfo();
-                Intent intent = new Intent(SignupActivity.this, CompleteProfileActivity.class);
-                startActivity(intent);
+            } else if (!signup_username.isEmpty() && !signup_password.isEmpty() && !signup_confirmPass.isEmpty() && !signup_email.isEmpty()) {
+                ServerCommunicator serverCommunicator = new ServerCommunicator(this);
+                serverCommunicator.sendSignUpInfo();
+            }
+            else
+            {
+                showToast(this,"Please, fill up all the field");
             }
         }
     }

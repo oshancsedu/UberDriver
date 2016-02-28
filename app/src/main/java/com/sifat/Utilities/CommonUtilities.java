@@ -36,7 +36,7 @@ public class CommonUtilities {
     public static final String USER_NID = "userNID";
     public static final String USER_REGISTRATION_ID = "userRegID";
     public static final String USER_FB_INFO = "userFbInfo";
-    public static final String USER_NAME = "userName";
+    public static final String USER_NAME = "username";
     public static final String USER_EMAIL = "email";
     public static final String USER_PROFESSON = "profession";
     public static final String USER_FACEBOOK_ID = "userId";
@@ -60,7 +60,7 @@ public class CommonUtilities {
     public static final String LOG_TAG_SIGNUP = "singup";
     public static final String LOG_TAG_GCM = "gcmloginfo";
     ///Website URl
-    public static final String SIGN_UP_WEBSITE = "http://192.168.1.111:8000/rest-auth/registration/";
+    public static final String SIGN_UP_WEBSITE = "http://khep.finder-lbs.com:8001/auth/register/";
     public static final String LOGIN_WEBSITE = "http://inspireitl.com/gober/login.php";
     public static final String LOGOUT_WEBSITE = "http://inspireitl.com/gober/logout.php";
     public static final String TAXI_POSITION_ADDRESS = "http://aimsil.com/uber/taxiposition.txt";
@@ -71,7 +71,7 @@ public class CommonUtilities {
     public static final String SENDER_PROJECT_ID = "307986532903";
     public static final String GCM_REGISTER_ID = "gcmRegID";
     public static String signup_fname, signup_lname, signup_bday, signup_address, signup_email, profileImgUrl,
-            signup_mobile, signup_password, signup_gender, signup_confirmPass, signup_profession, signup_NID;
+            signup_mobile, signup_password, signup_gender, signup_confirmPass, signup_profession, signup_NID,signup_username;
     public static Bitmap proPic, NDIPic;
 
     public static SharedPreferences getSharedPref(Context context)
