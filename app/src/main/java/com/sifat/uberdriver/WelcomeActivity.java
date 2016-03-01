@@ -36,7 +36,7 @@ public class WelcomeActivity extends ActionBarActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         intent = new Intent(WelcomeActivity.this, MapsActivity.class);
         printKeyHash();
-        sharedPreferences = getSharedPreferences(String.valueOf(R.string.sharedPref), this.MODE_PRIVATE);
+        sharedPreferences = getSharedPref(this);
         email = sharedPreferences.getString(USER_EMAIL, "");
         if (!email.equalsIgnoreCase("")) {
             startActivity(intent);

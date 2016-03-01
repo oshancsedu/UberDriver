@@ -32,8 +32,18 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebookAppId" />
+
         <service android:name="com.sifat.Service.HireCallService" />
         <service android:name="com.sifat.Service.OnRideService" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
         <activity
             android:name=".WelcomeActivity"
@@ -55,9 +65,10 @@
         <activity
             android:name=".DriverTaxiStatus"
             android:screenOrientation="portrait"/>
+        <activity android:name=".CompleteProfileActivity"/>
+        <activity android:name=".ImageUploadActivity"/>
+        <activity android:name=".UploadNIDInfoActivity"/>
+        <activity android:name=".ValidationActivity"/>
 
     </application>
-
-
-
 </manifest>

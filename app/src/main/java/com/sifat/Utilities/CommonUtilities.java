@@ -9,6 +9,10 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.sifat.uberdriver.R;
 
+import java.util.StringTokenizer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by sifat on 1/30/2016.
  */
@@ -52,6 +56,13 @@ public class CommonUtilities {
     public static final String USER_NID_PIC = "nidPic";
     public static final String USER_TYPE_STRING = "userType";
     public static final String USER_TYPE = "Driver";
+    public static final String SERVER_ACCESS_TOKEN="serverAccessToken";
+    public static final String USER_STATUS_1="not completed";
+    public static final String USER_STATUS_2="completed";
+    public static final String USER_STATUS_3="profile picture not found";
+    public static final String USER_STATUS_4="national ID not found";
+
+
     /////LOG TAGs
     public static final String LOG_TAG_FACEBOOK = "facebook";
     public static final String LOG_TAG_SERVICE = "Service";
@@ -59,13 +70,20 @@ public class CommonUtilities {
     public static final String LOG_TAG_HIRETAXI = "TaxiHire";
     public static final String LOG_TAG_SIGNUP = "singup";
     public static final String LOG_TAG_GCM = "gcmloginfo";
+    public static final String LOG_TAG_LOGIN="login";
+    public static final String SERVER_RESPONSE_DISABLE="{\"non_field_errors\":[\"User account is disabled.\"]}";
+    public static final String SERVER_RESPONSE_NOT_MATCHED="{\"non_field_errors\":[\"Unable to login with provided credentials.\"]}";
+
     ///Website URl
     public static final String SIGN_UP_WEBSITE = "http://khep.finder-lbs.com:8001/auth/register/";
-    public static final String LOGIN_WEBSITE = "http://inspireitl.com/gober/login.php";
+    public static final String LOGIN_WEBSITE = "http://khep.finder-lbs.com:8001/auth/login/";
     public static final String LOGOUT_WEBSITE = "http://inspireitl.com/gober/logout.php";
+    public static final String COMPLETE_USER_INFO_WEBSITE="http://aimsil.com/uber/uploadImage.php";
     public static final String TAXI_POSITION_ADDRESS = "http://aimsil.com/uber/taxiposition.txt";
     public static final String PROFILE_INFO_URL = "";
     public static final String LOGIN_WITH_FB = "isLoginWithFacebook";
+    public static final String USER_STATUS_WEBSITE="http://aimsil.com/uber/userInfo.php";
+
     ///GCM Registration number
     public static final String PROPERTY_APP_VERSION = "appVersion";
     public static final String SENDER_PROJECT_ID = "307986532903";
@@ -95,6 +113,45 @@ public class CommonUtilities {
     public static void showToast(Context context,String message)
     {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+    public static boolean isEmail(String email)
+    {
+        boolean matchFound1;
+        boolean returnResult=true;
+        email=email.trim();
+        if(email.equalsIgnoreCase(""))
+            returnResult=false;
+        else if(!Character.isLetter(email.charAt(0)))
+            returnResult=false;
+        else
+        {
+            Pattern p1 = Pattern.compile("^\\.|^\\@ |^_");
+            Matcher m1 = p1.matcher(email.toString());
+            matchFound1=m1.matches();
+
+            Pattern p = Pattern.compile("^[a-zA-z0-9._-]+[@]{1}+[a-zA-Z0-9]+[.]{1}+[a-zA-Z]{2,4}$");
+            // Match the given string with the pattern
+            Matcher m = p.matcher(email.toString());
+
+            // check whether match is found
+            boolean matchFound = m.matches();
+
+            StringTokenizer st = new StringTokenizer(email, ".");
+            String lastToken = null;
+            while (st.hasMoreTokens())
+            {
+                lastToken = st.nextToken();
+            }
+            if (matchFound && lastToken.length() >= 2
+                    && email.length() - 1 != lastToken.length() && matchFound1==false)
+            {
+
+                returnResult= true;
+            }
+            else returnResult= false;
+        }
+        return returnResult;
     }
 
 }

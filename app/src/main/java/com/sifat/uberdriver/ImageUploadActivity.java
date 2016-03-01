@@ -28,6 +28,7 @@ public class ImageUploadActivity extends ActionBarActivity implements View.OnCli
     private Toolbar toolbar;
     private Button btChooseImage, btTakeImage, btNext;
     private ImageView ivProfilePic;
+    private boolean isPictureTaken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +38,7 @@ public class ImageUploadActivity extends ActionBarActivity implements View.OnCli
     }
 
     private void init() {
+        isPictureTaken=false;
         ivProfilePic = (ImageView) findViewById(R.id.ivUploadProfilePic);
         btChooseImage = (Button) findViewById(R.id.btUploadFromGallery);
         btTakeImage = (Button) findViewById(R.id.btTakePhoto);
@@ -60,11 +62,17 @@ public class ImageUploadActivity extends ActionBarActivity implements View.OnCli
             Intent gallery = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(gallery, RESULT_TAKE_IMAGE);
         } else if (v.getId() == R.id.btNextToNID) {
-            showToast(this, "CLICKED");
-            proPic = ((BitmapDrawable) ivProfilePic.getDrawable()).getBitmap();
 
-            Intent nextIntent = new Intent(this, UploadNIDInfoActivity.class);
-            startActivity(nextIntent);
+            if(isPictureTaken)
+            {
+                proPic = ((BitmapDrawable) ivProfilePic.getDrawable()).getBitmap();
+                Intent nextIntent = new Intent(this, UploadNIDInfoActivity.class);
+                startActivity(nextIntent);
+            }
+            else
+            {
+                showToast(this, "Select a picture of you");
+            }
 
             //BitmapFactory.Options options=new BitmapFactory.Options();
             //options.inSampleSize = 8;
@@ -95,6 +103,7 @@ public class ImageUploadActivity extends ActionBarActivity implements View.OnCli
                 int x = (source.getWidth() - size) / 2;
                 int y = (source.getHeight() - size) / 2;
                 ivProfilePic.setImageBitmap(Bitmap.createBitmap(source, x, y, size, size));
+                isPictureTaken=true;
             }
         }
     }

@@ -53,7 +53,12 @@ public class SignupActivity extends ActionBarActivity implements View.OnClickLis
 
             if (!signup_password.equals(signup_confirmPass)) {
                 showToast(this, "Password did not matched!");
-            } else if (!signup_username.isEmpty() && !signup_password.isEmpty() && !signup_confirmPass.isEmpty() && !signup_email.isEmpty()) {
+            }
+            else if(!isEmail(signup_email))
+            {
+                showToast(this,"Please enter a valid email");
+            }
+            else if (!signup_username.isEmpty() && !signup_password.isEmpty() && !signup_confirmPass.isEmpty() && !signup_email.isEmpty()) {
                 ServerCommunicator serverCommunicator = new ServerCommunicator(this);
                 serverCommunicator.sendSignUpInfo();
             }

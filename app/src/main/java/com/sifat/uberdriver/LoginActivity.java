@@ -159,18 +159,18 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
     protected void onResume() {
         super.onResume();
         // Logs 'install' and 'app activate' App Events.
-        AppEventsLogger.activateApp(this);
+        /*AppEventsLogger.activateApp(this);
         profileTracker.startTracking();
-        accessTokenTracker.startTracking();
+        accessTokenTracker.startTracking();*/
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         // Logs 'app deactivate' App Event.
-        AppEventsLogger.deactivateApp(this);
+        /*AppEventsLogger.deactivateApp(this);
         profileTracker.stopTracking();
-        accessTokenTracker.stopTracking();
+        accessTokenTracker.stopTracking();*/
     }
 
     @Override
