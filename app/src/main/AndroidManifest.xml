@@ -51,7 +51,6 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -69,6 +68,11 @@
         <activity android:name=".ImageUploadActivity"/>
         <activity android:name=".UploadNIDInfoActivity"/>
         <activity android:name=".ValidationActivity"/>
+        <activity android:name=".AboutActivity"/>
+        <activity android:name=".HelpActivity"/>
+        <activity android:name=".HistoryActivity"/>
+        <activity android:name=".ProfileActivity"/>
+        <activity android:name=".SettingsActivity"/>
 
     </application>
 </manifest>

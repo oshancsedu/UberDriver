@@ -1,11 +1,14 @@
 package com.sifat.uberdriver;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -43,7 +46,10 @@ public class MapsActivity extends ActionBarActivity implements
         OnMapReadyCallback,
         CustomMapFragmment.OnTouchListener,
         GoogleMap.OnCameraChangeListener,
-        GoogleMap.OnMarkerClickListener, View.OnClickListener, SearchView.OnQueryTextListener {
+        GoogleMap.OnMarkerClickListener,
+        View.OnClickListener,
+        SearchView.OnQueryTextListener,
+        NavigationView.OnNavigationItemSelectedListener {
 
     private GoogleMap mMap;
     private LocationProvider locationProvider;
@@ -57,6 +63,7 @@ public class MapsActivity extends ActionBarActivity implements
     private SearchView searchView;
     private List<Address> addressList;
     private Geocoder geocoder;
+    private NavigationView navView;
 
 
     @Override
@@ -90,6 +97,9 @@ public class MapsActivity extends ActionBarActivity implements
         dlMenu = (DrawerLayout) findViewById(R.id.drawer);
         btStatus = (FButton) findViewById(R.id.btStatus);
         btStatus.setOnClickListener(this);
+
+        navView = (NavigationView) findViewById(R.id.navigation);
+        navView.setNavigationItemSelectedListener(this);
 
         sharedpreferences = getSharedPref(this);
         editor = sharedpreferences.edit();
@@ -234,4 +244,72 @@ public class MapsActivity extends ActionBarActivity implements
         return false;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return menuNavigation(item,this);
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        showToast(this,"Item tapped");
+        return menuNavigation(item,this);
+    }
+
+    private boolean menuNavigation(MenuItem item,Context context)
+    {
+        showToast(this,"Function called!");
+        Intent intent;
+        switch (item.getItemId()) {
+
+            case android.R.id.home:
+                dlMenu.openDrawer(GravityCompat.START);
+                return super.onOptionsItemSelected(item);
+
+            case R.id.Search:
+                break;
+
+            case R.id.navigation_item_profile:
+                intent = new Intent(context,ProfileActivity.class);
+                if(dlMenu.isDrawerOpen(GravityCompat.START))
+                    dlMenu.closeDrawers();
+                startActivity(intent);
+                break;
+
+            case R.id.navigation_item_logout:
+                Logout(this);
+                if(dlMenu.isDrawerOpen(GravityCompat.START))
+                    dlMenu.closeDrawers();
+                finish();
+                break;
+
+            case R.id.navigation_item_about:
+                intent = new Intent(context,AboutActivity.class);
+                if(dlMenu.isDrawerOpen(GravityCompat.START))
+                    dlMenu.closeDrawers();
+                startActivity(intent);
+                break;
+
+            case R.id.navigation_item_help:
+                intent = new Intent(context,HelpActivity.class);
+                if(dlMenu.isDrawerOpen(GravityCompat.START))
+                    dlMenu.closeDrawers();
+                startActivity(intent);
+                break;
+
+            case R.id.navigation_item_history:
+                intent = new Intent(context,HistoryActivity.class);
+                if(dlMenu.isDrawerOpen(GravityCompat.START))
+                    dlMenu.closeDrawers();
+                startActivity(intent);
+                break;
+
+            case R.id.navigation_item_settings:
+                intent = new Intent(context,SettingsActivity.class);
+                if(dlMenu.isDrawerOpen(GravityCompat.START))
+                    dlMenu.closeDrawers();
+                startActivity(intent);
+                break;
+        }
+        return false;
+    }
 }

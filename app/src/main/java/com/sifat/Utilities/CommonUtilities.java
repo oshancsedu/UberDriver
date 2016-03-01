@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.sifat.Controller.ServerCommunicator;
 import com.sifat.uberdriver.R;
 
 import java.util.StringTokenizer;
@@ -17,7 +18,6 @@ import java.util.regex.Pattern;
  * Created by sifat on 1/30/2016.
  */
 public class CommonUtilities {
-
 
     public static final int SUCCESS_RESULT = 0;
     public static final int FAILURE_RESULT = 1;
@@ -62,7 +62,6 @@ public class CommonUtilities {
     public static final String USER_STATUS_3="profile picture not found";
     public static final String USER_STATUS_4="national ID not found";
 
-
     /////LOG TAGs
     public static final String LOG_TAG_FACEBOOK = "facebook";
     public static final String LOG_TAG_SERVICE = "Service";
@@ -71,8 +70,6 @@ public class CommonUtilities {
     public static final String LOG_TAG_SIGNUP = "singup";
     public static final String LOG_TAG_GCM = "gcmloginfo";
     public static final String LOG_TAG_LOGIN="login";
-    public static final String SERVER_RESPONSE_DISABLE="{\"non_field_errors\":[\"User account is disabled.\"]}";
-    public static final String SERVER_RESPONSE_NOT_MATCHED="{\"non_field_errors\":[\"Unable to login with provided credentials.\"]}";
 
     ///Website URl
     public static final String SIGN_UP_WEBSITE = "http://khep.finder-lbs.com:8001/auth/register/";
@@ -113,6 +110,16 @@ public class CommonUtilities {
     public static void showToast(Context context,String message)
     {
         Toast.makeText(context,message,Toast.LENGTH_SHORT).show();
+    }
+
+    public static void Logout(Context context)
+    {
+        SharedPreferences sharedPreferences = getSharedPref(context);
+
+        String user_reg_num = sharedPreferences.getString(USER_REGISTRATION_ID, "");
+        String gcmID = sharedPreferences.getString(GCM_REGISTER_ID, "");
+        //serverCommunicator = new ServerCommunicator(context);
+        //serverCommunicator.logout(gcmID, user_reg_num);
     }
 
     public static boolean isEmail(String email)

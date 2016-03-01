@@ -204,6 +204,7 @@ public class ServerCommunicator {
             }
             else if(status.equalsIgnoreCase(USER_STATUS_2))
             {
+                saveUserInfo(response);
                 changeActivity(MapsActivity.class);
             }
             else if(status.equalsIgnoreCase(USER_STATUS_3))
@@ -218,7 +219,6 @@ public class ServerCommunicator {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
 
@@ -269,34 +269,37 @@ public class ServerCommunicator {
         editor.commit();
     }
 
-    private void saveUserInfo(String response) {
+    private void saveUserInfo(JSONObject userInfo) {
         try {
-            JSONObject userInfo = new JSONObject(response);
+            Log.e("JSON", "1");
+            editor.putString(USER_RATING, userInfo.getString(USER_RATING));
+            editor.putString(USER_BALANCE, userInfo.getString(USER_BALANCE));
 
-            editor.putString(USER_RATING, userInfo.getString("userRating"));
-            editor.putString(USER_BALANCE, userInfo.getString("userBalance"));
-            editor.putString(USER_PRO_PIC_URL, userInfo.getString("proPicURL"));
-            editor.putString(USER_PROFESSION, userInfo.getString("userProfession"));
-            editor.putString(USER_NID, userInfo.getString("userNID"));
-            editor.putString(USER_EMAIL, userInfo.getString("email"));
-            editor.putString(USER_BDAY, userInfo.getString("birthday"));
-            editor.putString(USER_GENDER, userInfo.getString("gender"));
-            editor.putString(USER_MOBILE_NUM, userInfo.getString("mobile"));
-            editor.putString(USER_ADDRESS, userInfo.getString("location"));
-            editor.putString(USER_FNAME, userInfo.getString("first_name"));
-            editor.putString(USER_LNAME, userInfo.getString("last_name"));
-            editor.putString(USER_NAME, userInfo.getString("first_name") + " " + userInfo.getString("last_name"));
-            editor.putString(USER_REGISTRATION_ID, userInfo.getString("id"));
+            editor.putString(USER_PRO_PIC_URL, userInfo.getString(USER_PRO_PIC_URL));
+            editor.putString(USER_PROFESSION, userInfo.getString(USER_PROFESSION));
+            //editor.putString(USER_NID, userInfo.getString("userNID"));
+            Log.e("JSON", "2");
+            editor.putString(USER_EMAIL, userInfo.getString(USER_EMAIL));
+            editor.putString(USER_BDAY, userInfo.getString(USER_BDAY));
+            editor.putString(USER_GENDER, userInfo.getString(USER_GENDER));
+            editor.putString(USER_MOBILE_NUM, userInfo.getString(USER_MOBILE_NUM));
+            editor.putString(USER_ADDRESS, userInfo.getString(USER_ADDRESS));
+            editor.putString(USER_FNAME, userInfo.getString(USER_FNAME));
+            editor.putString(USER_LNAME, userInfo.getString(USER_LNAME));
+            editor.putString(USER_NAME, userInfo.getString(USER_FNAME) + " " + userInfo.getString(USER_LNAME));
+            Log.e("JSON", "3");
+            //editor.putString(USER_REGISTRATION_ID, userInfo.getString("id"));
             editor.commit();
 
             showToast(context, sharedPreferences.getString(USER_ADDRESS, "") + sharedPreferences.getString(USER_EMAIL, "") +
                     sharedPreferences.getString(USER_FNAME, "") + sharedPreferences.getString(USER_LNAME, "") +
                     sharedPreferences.getString(USER_BDAY, "") + sharedPreferences.getString(USER_GENDER, "") +
-                    sharedPreferences.getString(USER_REGISTRATION_ID, "") + sharedPreferences.getString(USER_MOBILE_NUM, ""));
+                    sharedPreferences.getString(USER_MOBILE_NUM, ""));
 
 
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.e("JSON","ERROR");
         }
     }
 
