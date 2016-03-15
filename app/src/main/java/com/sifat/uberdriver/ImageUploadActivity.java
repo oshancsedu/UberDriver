@@ -93,6 +93,7 @@ public class ImageUploadActivity extends ActionBarActivity implements View.OnCli
                     inputStream = getContentResolver().openInputStream(selectedImages);
                     //ivProfilePic.setImageBitmap(BitmapFactory.decodeStream(inputStream));
                     Picasso.with(this).load(selectedImages).resize(200, 200).centerCrop().into(ivProfilePic);
+                    isPictureTaken=true;
                 } catch (Exception e) {
                     showToast(this, "Problem in loading image");
                 }
