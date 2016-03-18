@@ -34,6 +34,7 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.sifat.Controller.ServerCommunicator;
 import com.sifat.Custom.CustomMapFragmment;
 import com.sifat.Service.OnRideService;
 import com.sifat.Utilities.LocationProvider;
@@ -88,6 +89,7 @@ public class HireAlertActivity extends ActionBarActivity implements
     private Intent intent;
     private NotificationManager notificationManager;
     private NotificationCompat.Builder builder;
+    private ServerCommunicator serverCommunicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,6 +126,7 @@ public class HireAlertActivity extends ActionBarActivity implements
         btAccept.setOnClickListener(this);
         btReject.setOnClickListener(this);
         sec=15;
+        serverCommunicator = new ServerCommunicator(this);
 
         powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.FULL_WAKE_LOCK, "My Tag");
@@ -229,7 +232,10 @@ public class HireAlertActivity extends ActionBarActivity implements
         if(v.getId()==R.id.btAccept)
         {
             timer.cancel();
-            intent = new Intent(HireAlertActivity.this, OnRideService.class);
+            serverCommunicator.acceptRide();
+            //finishTimer();
+
+             /*intent = new Intent(HireAlertActivity.this, OnRideService.class);
 
             String message = "OK";
             latlngBundle.putString(SELECTED_USER_NAME, "Sifat Oshan");
@@ -239,8 +245,7 @@ public class HireAlertActivity extends ActionBarActivity implements
             latlngBundle.putString(HIRE_STATUS_MESSAGE, message);
 
             intent.putExtras(latlngBundle);
-            startService(intent);
-            finishTimer();
+            startService(intent);*/
         }
     }
 

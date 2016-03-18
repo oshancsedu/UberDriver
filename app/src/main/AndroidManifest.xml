@@ -38,6 +38,15 @@
 
         <service android:name="com.sifat.Service.HireCallService" />
         <service android:name="com.sifat.Service.OnRideService" />
+        <service android:name="com.sifat.Service.GcmIntentService"/>
+
+        <receiver android:name="com.sifat.Receiver.GcmBroadcastReceiver"
+            android:permission="com.google.android.c2dm.permission.SEND" >
+            <intent-filter>
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <category android:name="com.example.gcm" />
+            </intent-filter>
+        </receiver>
 
         <activity
             android:name="com.facebook.FacebookActivity"

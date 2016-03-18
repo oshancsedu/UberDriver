@@ -9,6 +9,9 @@
     You can also add your credentials to an existing key, using this line:
     1D:E8:0C:2B:2D:E7:84:8D:71:18:8E:6D:A7:24:D0:AF:60:63:06:C4;com.sifat.uberdriver
 
+    https://console.developers.google.com/flows/enableapi?apiid=maps_android_backend&keyType=CLIENT_SIDE_ANDROID&r=9C:69:E7:0E:F5:FD:3D:C5:A6:D0:F8:C3:3F:CB:4C:00:24:AD:AA:FC%3Bcom.sifat.uberdriver
+
+
     Alternatively, follow the directions here:
     https://developers.google.com/maps/documentation/android/start#get-key
 
@@ -16,6 +19,6 @@
     string in this file.
     -->
     <string name="google_maps_key" translatable="false" templateMergeStrategy="preserve">
-        AIzaSyDwhqI2PETnSY5dUe_pY-ZTSGCq5rfMbgs
+        AIzaSyD5iOTJWLP6t-60KSQjFjAtSUeJr9ULvw0
     </string>
 </resources>

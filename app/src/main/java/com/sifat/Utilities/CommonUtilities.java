@@ -25,6 +25,12 @@ public class CommonUtilities {
     public static final String LOG_TAG_TOUCH="Log Tpuch";
     public static final String SRC_LATLNG="scr_latlng";
     public static final String DIST_LATLNG="dist_latlng";
+    public static final String DIST_LAT="distLat";
+    public static final String DIST_LNG="distLng";
+    public static final String SRC_LAT="srcLat";
+    public static final String SRC_LNG="srcLng";
+    public static final String RIDE_CALL ="ride_calling";
+
     public static final String SELECTED_USER_NAME = "selectedUserName";
     public static final String SELECTED_USER_MOBILE = "selectedUserMobile";
     public static final String SELECTED_USER_RATING = "selectedUserRating";
@@ -80,10 +86,12 @@ public class CommonUtilities {
     public static final String PROFILE_INFO_URL = "";
     public static final String LOGIN_WITH_FB = "isLoginWithFacebook";
     public static final String USER_STATUS_WEBSITE="http://aimsil.com/uber/userInfo.php";
+    public static final String ACCEPT_RIDE_WEBSITE ="http://aimsil.com/uber/acceptRide.php";
+
 
     ///GCM Registration number
     public static final String PROPERTY_APP_VERSION = "appVersion";
-    public static final String SENDER_PROJECT_ID = "307986532903";
+    public static final String SENDER_PROJECT_ID = "357102913429";
     public static final String GCM_REGISTER_ID = "gcmRegID";
     public static String signup_fname, signup_lname, signup_bday, signup_address, signup_email, profileImgUrl,
             signup_mobile, signup_password, signup_gender, signup_confirmPass, signup_profession, signup_NID,signup_username;

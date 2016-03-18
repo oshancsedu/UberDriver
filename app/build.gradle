@@ -18,6 +18,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dexOptions {
+        javaMaxHeapSize "4g"
+        preDexLibraries = false
+    }
 }
 repositories {
     mavenCentral()
@@ -30,19 +34,18 @@ repositories {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile files('libs/gcm.jar')
-    compile 'com.github.polok:RouteDrawer:94174c22b0'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.google.android.gms:play-services:8.3.0'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.loopj.android:android-async-http:1.4.+'
+
     compile 'info.hoang8f:fbutton:1.0.5'
     compile 'com.skyfishjy.ripplebackground:library:1.0.+'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.android.support:design:23.0.0'
+    compile 'com.github.polok:RouteDrawer:94174c22b0'
+    compile 'com.android.support:appcompat-v7:23.1.0'
+    compile 'com.android.support:support-v4:23.0.+'
+    compile 'com.google.android.gms:play-services:8.3.0'
+    compile 'com.loopj.android:android-async-http:1.4.+'
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
+    compile 'com.android.support:multidex:1.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.4.3'
-    compile 'com.google.android.gms:play-services-ads:8.3.0'
-    compile 'com.google.android.gms:play-services-identity:8.3.0'
-    compile 'com.google.android.gms:play-services-gcm:8.3.0'
+
 }

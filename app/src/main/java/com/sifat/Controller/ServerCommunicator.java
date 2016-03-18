@@ -193,34 +193,31 @@ public class ServerCommunicator {
         });
     }
 
-    private void checkUserStatus(String res) {
+    public void acceptRide()
+    {
+        String accessToken = sharedPreferences.getString(SERVER_ACCESS_TOKEN,"");
+        RequestParams requestParams = new RequestParams();
+        requestParams.put(SERVER_ACCESS_TOKEN, accessToken);
 
-        try {
-            JSONObject response = new JSONObject(res);
-            String status = response.getString("status");
-            if(status.equalsIgnoreCase(USER_STATUS_1))
-            {
-                changeActivity(CompleteProfileActivity.class);
-            }
-            else if(status.equalsIgnoreCase(USER_STATUS_2))
-            {
-                saveUserInfo(response);
-                changeActivity(MapsActivity.class);
-            }
-            else if(status.equalsIgnoreCase(USER_STATUS_3))
-            {
-                changeActivity(ImageUploadActivity.class);
-            }
-            else if(status.equalsIgnoreCase(USER_STATUS_4))
-            {
-                changeActivity(UploadNIDInfoActivity.class);
+        final String acceptRideWebsite=ACCEPT_RIDE_WEBSITE;
+
+        LoopjHttpClient.post(acceptRideWebsite, requestParams, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                Log.i("REQ","Success");
+                String response = new String(responseBody);
+                Log.i("REQ", response);
             }
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i("REQ","Fail");
+                String response = new String(responseBody);
+                Log.i("REQ",response);
+            }
+        });
     }
-
 
     public void logout(String gcmRegID, String userRegID) {
         final RequestParams requestParams = new RequestParams();
@@ -252,7 +249,6 @@ public class ServerCommunicator {
                 LoopjHttpClient.debugLoopJ(LOG_TAG_SIGNUP, "sendLocationDataToWebsite - failure", logoutWebsite, requestParams, responseBody, headers, statusCode, error, context);
             }
         });
-
     }
 
     private void eraseUserInfo() {
@@ -312,6 +308,34 @@ public class ServerCommunicator {
 
         Intent intent = new Intent(context, activityclass);
         context.startActivity(intent);
+    }
+
+    private void checkUserStatus(String res) {
+
+        try {
+            JSONObject response = new JSONObject(res);
+            String status = response.getString("status");
+            if(status.equalsIgnoreCase(USER_STATUS_1))
+            {
+                changeActivity(CompleteProfileActivity.class);
+            }
+            else if(status.equalsIgnoreCase(USER_STATUS_2))
+            {
+                saveUserInfo(response);
+                changeActivity(MapsActivity.class);
+            }
+            else if(status.equalsIgnoreCase(USER_STATUS_3))
+            {
+                changeActivity(ImageUploadActivity.class);
+            }
+            else if(status.equalsIgnoreCase(USER_STATUS_4))
+            {
+                changeActivity(UploadNIDInfoActivity.class);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 

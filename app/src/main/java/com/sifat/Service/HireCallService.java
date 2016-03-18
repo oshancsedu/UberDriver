@@ -8,6 +8,7 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.sifat.Receiver.GcmBroadcastReceiver;
 import com.sifat.uberdriver.HireAlertActivity;
 
 import static com.sifat.Utilities.CommonUtilities.*;
@@ -17,8 +18,9 @@ import static com.sifat.Utilities.CommonUtilities.*;
  */
 public class HireCallService extends IntentService {
 
-    private Bundle latlngs;
+    private Bundle latlngs,gcmMessage;
     LatLng srcLatLng,distLatLng;
+    private double srcLat,srcLng,distLat,distLng;
 
     public HireCallService() {
         super("HireCallService");
@@ -28,15 +30,21 @@ public class HireCallService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         Log.e("Service", "Start");
 
-        try {
+        /*try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
+
+        gcmMessage = intent.getExtras();
+        srcLat = Double.parseDouble(gcmMessage.getString(SRC_LAT));
+        srcLng = Double.parseDouble(gcmMessage.getString(SRC_LNG));
+        distLat = Double.parseDouble(gcmMessage.getString(DIST_LAT));
+        distLng = Double.parseDouble(gcmMessage.getString(DIST_LNG));
 
         latlngs = new Bundle();
-        srcLatLng = new LatLng(23.748311, 90.379986);
-        distLatLng = new LatLng(23.748232, 90.369944);
+        srcLatLng = new LatLng(srcLat, srcLng);
+        distLatLng = new LatLng(distLat, distLng);
         latlngs.putParcelable(SRC_LATLNG, srcLatLng);
         latlngs.putParcelable(DIST_LATLNG, distLatLng);
 
@@ -44,6 +52,7 @@ public class HireCallService extends IntentService {
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         dialogIntent.putExtras(latlngs);
         startActivity(dialogIntent);
+        GcmBroadcastReceiver.completeWakefulIntent(intent);
         stopSelf();
     }
 

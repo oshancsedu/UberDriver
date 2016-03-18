@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import com.sifat.Controller.ServerCommunicator;
 import com.sifat.Custom.CustomMapFragmment;
 import com.sifat.Service.HireCallService;
 import com.sifat.Utilities.LocationProvider;
@@ -64,6 +65,7 @@ public class MapsActivity extends ActionBarActivity implements
     private List<Address> addressList;
     private Geocoder geocoder;
     private NavigationView navView;
+    private ServerCommunicator serverCommunicator;
 
 
     @Override
@@ -98,6 +100,7 @@ public class MapsActivity extends ActionBarActivity implements
         btStatus = (FButton) findViewById(R.id.btStatus);
         btStatus.setOnClickListener(this);
 
+        serverCommunicator = new ServerCommunicator(this);
         navView = (NavigationView) findViewById(R.id.navigation);
         navView.setNavigationItemSelectedListener(this);
 
@@ -125,8 +128,8 @@ public class MapsActivity extends ActionBarActivity implements
         locationProvider = new LocationProvider(this, mMap, editor, sharedpreferences);
         locationProvider.getMyLocaton();
 
-        Intent in = new Intent(MapsActivity.this, HireCallService.class);
-        startService(in);
+        /*Intent in = new Intent(MapsActivity.this, HireCallService.class);
+        startService(in);*/
     }
 
     //UI settings of map
