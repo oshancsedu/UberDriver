@@ -41,6 +41,9 @@ public class ServerCommunicator {
         setSharedPreferences();
     }
 
+    public ServerCommunicator() {
+    }
+
     public void sendImage() {
         ByteArrayOutputStream proPicByteArrayOutputStream = new ByteArrayOutputStream();
         ByteArrayOutputStream nidPicByteArrayOutputStream = new ByteArrayOutputStream();
@@ -196,10 +199,11 @@ public class ServerCommunicator {
     public void acceptRide()
     {
         String accessToken = sharedPreferences.getString(SERVER_ACCESS_TOKEN,"");
-        RequestParams requestParams = new RequestParams();
+        final String acceptRideWebsite = ACCEPT_RIDE_WEBSITE;
+        final RequestParams requestParams = new RequestParams();
         requestParams.put(SERVER_ACCESS_TOKEN, accessToken);
 
-        final String acceptRideWebsite=ACCEPT_RIDE_WEBSITE;
+        Log.i("REQ",acceptRideWebsite);
 
         LoopjHttpClient.post(acceptRideWebsite, requestParams, new AsyncHttpResponseHandler() {
 
@@ -228,7 +232,6 @@ public class ServerCommunicator {
         //showToast(context, logoutWebsite);
 
         LoopjHttpClient.get(logoutWebsite, requestParams, new AsyncHttpResponseHandler() {
-
 
             @Override
             public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {

@@ -39,6 +39,7 @@
         <service android:name="com.sifat.Service.HireCallService" />
         <service android:name="com.sifat.Service.OnRideService" />
         <service android:name="com.sifat.Service.GcmIntentService"/>
+        <service android:name="com.sifat.Service.AcceptRideRequest"/>
 
         <receiver android:name="com.sifat.Receiver.GcmBroadcastReceiver"
             android:permission="com.google.android.c2dm.permission.SEND" >

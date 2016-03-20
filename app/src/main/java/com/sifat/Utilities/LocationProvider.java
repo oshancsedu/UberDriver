@@ -48,7 +48,7 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
     private SharedPreferences.Editor editor;
     private SharedPreferences pref;
     private LatLng srcLatlng, distLatlng;
-    private boolean isCalled;
+    private boolean isCalled,cancelDrawPath;
 
     public LocationProvider(Context c, GoogleMap gmap, SharedPreferences.Editor editor, SharedPreferences sharedPreferences){
         context=c;
@@ -187,6 +187,14 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
             showPath();
     }
 
+    public boolean isCancelDrawPath() {
+        return cancelDrawPath;
+    }
+
+    public void setCancelDrawPath(boolean drawPath) {
+        this.cancelDrawPath = drawPath;
+    }
+
     private void showPath() {
 
         if (mLastLocation != null) {
@@ -241,7 +249,10 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
                 .subscribe(new Action1<Routes>() {
                     @Override
                     public void call(Routes r) {
-                        routeDrawer.drawPath(r);
+                        if(!cancelDrawPath)
+                        {
+                            routeDrawer.drawPath(r);
+                        }
                     }
                 });
 

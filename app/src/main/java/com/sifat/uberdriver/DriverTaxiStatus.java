@@ -59,7 +59,7 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
     private Marker srcMarker, distMarker;
     private TextView tvUsername, tvUserMobile;
     private RatingBar rbDriverRate;
-    private float rating;
+    private float rating,lat,lng;
     private Toolbar toolbar;
     private UserRating userRating;
     private String userName, userId;
@@ -75,14 +75,23 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
         init();
 
         bundle = getIntent().getExtras();
-        srcLatLng = bundle.getParcelable(SRC_LATLNG);
-        distLatLng = bundle.getParcelable(DIST_LATLNG);
+
+        lat = Float.parseFloat(bundle.getString(SRC_LAT));
+        lng = Float.parseFloat(bundle.getString(SRC_LNG));
+
+        srcLatLng = new LatLng(lat,lng);
+
+        lat = Float.parseFloat(bundle.getString(DIST_LAT));
+        lng = Float.parseFloat(bundle.getString(DIST_LNG));
+
+        distLatLng = new LatLng(lat,lng);
 
         userName = bundle.getString(SELECTED_USER_NAME);
         tvUsername.setText(userName);
         tvUserMobile.setText(bundle.getString(SELECTED_USER_MOBILE));
-        rating = bundle.getFloat(SELECTED_USER_RATING);
+        rating = Float.parseFloat(bundle.getString(SELECTED_USER_RATING));
         userId = bundle.getString(SELECTED_USER_ID);
+
         rbDriverRate.setRating(rating + 0.5f);
         rbDriverRate.setRating(rating);
 

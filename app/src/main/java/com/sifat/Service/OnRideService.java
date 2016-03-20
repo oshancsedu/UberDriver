@@ -45,16 +45,15 @@ public class OnRideService extends IntentService {
         bundle = intent.getExtras();
 
         status = bundle.getString(HIRE_STATUS_MESSAGE);
-        userName = bundle.getString(SELECTED_USER_NAME);
-        userID = bundle.getString(SELECTED_USER_ID);
-        userRating = bundle.getFloat(SELECTED_USER_RATING);
+        message = bundle.getString(GCM_MESSAGE);
 
         if (status.equalsIgnoreCase("OK")) {
             isHired = true;
-            message = "You have successfully got your rider";
+            userName = bundle.getString(SELECTED_USER_NAME);
+            userID = bundle.getString(SELECTED_USER_ID);
+            userRating = Float.parseFloat(bundle.getString(SELECTED_USER_RATING));
         } else {
             isHired = false;
-            message = "Sorry !! This rider has hired another taxi.Try another one.";
         }
         bundle.remove(HIRE_STATUS_MESSAGE);
         Notify();
@@ -84,11 +83,11 @@ public class OnRideService extends IntentService {
                 .setContentTitle("GoBar")
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(message))
-                .setOngoing(true)
                 .setContentText(message).setSound(sound).setLights(Color.CYAN, 1, 1)
                 .setVibrate(new long[]{100, 100, 100, 100, 100});
 
         if (isHired) {
+            builder.setOngoing(true);
             editor.putString(SELECTED_USER_NAME, userName);
             editor.putString(SELECTED_USER_ID, userID);
             editor.putFloat(SELECTED_USER_RATING, userRating);

@@ -25,20 +25,28 @@ public class CommonUtilities {
     public static final String LOG_TAG_TOUCH="Log Tpuch";
     public static final String SRC_LATLNG="scr_latlng";
     public static final String DIST_LATLNG="dist_latlng";
-    public static final String DIST_LAT="distLat";
-    public static final String DIST_LNG="distLng";
-    public static final String SRC_LAT="srcLat";
-    public static final String SRC_LNG="srcLng";
+
+    /***
+     * GCM messgae type
+     * ***/
     public static final String RIDE_CALL ="ride_calling";
+    public static final String CALL_RESPONSE="callResponse";
 
     public static final String SELECTED_USER_NAME = "selectedUserName";
     public static final String SELECTED_USER_MOBILE = "selectedUserMobile";
     public static final String SELECTED_USER_RATING = "selectedUserRating";
     public static final String SELECTED_USER_ID = "selectedUserId";
+    public static final String HIRE_STATUS_MESSAGE = "hireStatus";
+    public static final String GCM_MESSAGE="message";
+
+    public static final String DIST_LAT="distLat";
+    public static final String DIST_LNG="distLng";
+    public static final String SRC_LAT="srcLat";
+    public static final String SRC_LNG="srcLng";
+
     public static final String NOTIFICATION_MANAGER = "notificationManager";
     public static final String IS_ON_HIRE = "isOnHire";
     public static final String IS_ONLINE = "driverStatus";
-    public static final String HIRE_STATUS_MESSAGE = "hireStatus";
     public static final String USER_RATING = "userRating";
     public static final String USER_BALANCE = "userBalance";
     public static final String USER_PROFESSION = "userProfession";

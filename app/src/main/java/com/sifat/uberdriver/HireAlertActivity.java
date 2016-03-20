@@ -36,6 +36,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.sifat.Controller.ServerCommunicator;
 import com.sifat.Custom.CustomMapFragmment;
+import com.sifat.Service.AcceptRideRequest;
 import com.sifat.Service.OnRideService;
 import com.sifat.Utilities.LocationProvider;
 import com.skyfishjy.library.RippleBackground;
@@ -232,8 +233,11 @@ public class HireAlertActivity extends ActionBarActivity implements
         if(v.getId()==R.id.btAccept)
         {
             timer.cancel();
+            /*intent = new Intent(HireAlertActivity.this, AcceptRideRequest.class);
+            startService(intent);
+            */
             serverCommunicator.acceptRide();
-            //finishTimer();
+            finishTimer();
 
              /*intent = new Intent(HireAlertActivity.this, OnRideService.class);
 
@@ -250,6 +254,7 @@ public class HireAlertActivity extends ActionBarActivity implements
     }
 
     private void finishTimer() {
+        locationProvider.setCancelDrawPath(true);
         mediaPlayer.stop();
         mediaPlayer.release();
         notificationManager.cancel(NOTIFICATION_ID);
