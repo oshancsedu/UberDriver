@@ -95,6 +95,7 @@ public class CommonUtilities {
     public static final String LOGIN_WITH_FB = "isLoginWithFacebook";
     public static final String USER_STATUS_WEBSITE="http://aimsil.com/uber/userInfo.php";
     public static final String ACCEPT_RIDE_WEBSITE ="http://aimsil.com/uber/acceptRide.php";
+    public static final String END_RIDE_WEBSITE="http://aimsil.com/uber/endRide.php";
 
 
     ///GCM Registration number

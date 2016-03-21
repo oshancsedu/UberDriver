@@ -196,31 +196,58 @@ public class ServerCommunicator {
         });
     }
 
-    public void acceptRide()
-    {
+    public void acceptRide() {
+
         String accessToken = sharedPreferences.getString(SERVER_ACCESS_TOKEN,"");
         final String acceptRideWebsite = ACCEPT_RIDE_WEBSITE;
         final RequestParams requestParams = new RequestParams();
         requestParams.put(SERVER_ACCESS_TOKEN, accessToken);
 
-        Log.i("REQ",acceptRideWebsite);
+        Log.i("REQ", acceptRideWebsite);
 
         LoopjHttpClient.post(acceptRideWebsite, requestParams, new AsyncHttpResponseHandler() {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                Log.i("REQ","Success");
+                Log.i("REQ", "Success");
                 String response = new String(responseBody);
                 Log.i("REQ", response);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.i("REQ","Fail");
+                Log.i("REQ", "Fail");
                 String response = new String(responseBody);
-                Log.i("REQ",response);
+                Log.i("REQ", response);
             }
         });
+    }
+
+    public void endRide(float rating,String userId)
+    {
+        final RequestParams requestParams = new RequestParams();
+        requestParams.put(USER_RATING,rating);
+        requestParams.put(USER_REGISTRATION_ID,userId);
+
+        final String endRideWebsite= END_RIDE_WEBSITE;
+        LoopjHttpClient.post(endRideWebsite, requestParams, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+                String response = new String(responseBody);
+                Log.i("Req", response);
+                showToast(context, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                String response = new String(responseBody);
+                Log.i("Req", response);
+                showToast(context, response);
+            }
+        });
+
+
     }
 
     public void logout(String gcmRegID, String userRegID) {

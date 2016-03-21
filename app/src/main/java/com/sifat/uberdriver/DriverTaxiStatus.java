@@ -17,6 +17,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.sifat.Controller.ServerCommunicator;
 import com.sifat.Custom.CustomMapFragmment;
 import com.sifat.Dialogues.UserRating;
 import com.github.polok.routedrawer.RouteApi;
@@ -67,6 +68,7 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
     private NotificationManager mNotificationManager;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
+    private ServerCommunicator serverCommunicator;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +111,8 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
 
         sharedPreferences = getSharedPref(this);
         editor = sharedPreferences.edit();
+
+        serverCommunicator = new ServerCommunicator(this);
 
         tvUserMobile = (TextView) findViewById(R.id.tvDriverMobileNum);
         tvUsername = (TextView) findViewById(R.id.tvDriverName);
@@ -210,8 +214,11 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
     }
 
     @Override
-    public void RatingDialog() {
+    public void RatingDialog(float rating) {
         //doBkash();
+
+        serverCommunicator.endRide(rating,userId);
+
         mNotificationManager.cancel(NOTIFICATION_ID);
         finish();
     }

@@ -66,18 +66,19 @@ public class UserRating extends DialogFragment implements View.OnClickListener,
     public void onClick(View view) {
 
         if (view.getId() == R.id.btPayment) {
-            communicator.RatingDialog();
+            communicator.RatingDialog(rating);
             dismiss();
         }
     }
 
     @Override
     public void onRatingChanged(RatingBar ratingBar, float rate, boolean b) {
+        rating = rate;
         tvRating.setText("You Rated: " + rate);
     }
 
 
     public interface Communicator {
-        public void RatingDialog();
+        public void RatingDialog(float rating);
     }
 }
