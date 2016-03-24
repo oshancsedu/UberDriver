@@ -31,6 +31,7 @@ public class CommonUtilities {
      * ***/
     public static final String RIDE_CALL ="ride_calling";
     public static final String CALL_RESPONSE="callResponse";
+    public static final String RIDE_PAYMENT="payment";
 
     public static final String SELECTED_USER_NAME = "selectedUserName";
     public static final String SELECTED_USER_MOBILE = "selectedUserMobile";

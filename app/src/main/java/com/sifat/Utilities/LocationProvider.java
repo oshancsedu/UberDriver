@@ -78,7 +78,6 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
                 mGoogleApiClient.connect();
             }
         }
-        //return null;
     }
 
     /**
@@ -126,9 +125,7 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
 
             editor.putBoolean("init", true);
             editor.commit();
-
         }
-
     }
 
 
@@ -159,7 +156,6 @@ public class LocationProvider implements GoogleApiClient.ConnectionCallbacks,
         //Toast.makeText(context,"startLocationUpdates",Toast.LENGTH_SHORT).show();
         LocationServices.FusedLocationApi.requestLocationUpdates(
                 mGoogleApiClient, mLocationRequest, this);
-
     }
 
     /**

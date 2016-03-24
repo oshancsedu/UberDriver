@@ -1,10 +1,13 @@
 package com.sifat.uberdriver;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
+import android.os.SystemClock;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -15,6 +18,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,7 +37,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import com.sifat.Controller.ServerCommunicator;
 import com.sifat.Custom.CustomMapFragmment;
+import com.sifat.Receiver.DriverLocationReciever;
+import com.sifat.Service.DriverLocation;
 import com.sifat.Service.HireCallService;
+import com.sifat.Utilities.DriverLocationProvider;
 import com.sifat.Utilities.LocationProvider;
 
 import java.io.IOException;
@@ -66,6 +73,8 @@ public class MapsActivity extends ActionBarActivity implements
     private Geocoder geocoder;
     private NavigationView navView;
     private ServerCommunicator serverCommunicator;
+    private PendingIntent pendingIntent;
+    private AlarmManager alarmManager;
 
 
     @Override
@@ -87,6 +96,7 @@ public class MapsActivity extends ActionBarActivity implements
 
         isOnline = sharedpreferences.getBoolean(IS_ONLINE, false);
         setButtonStatus();
+
     }
 
     private void init() {
@@ -127,6 +137,9 @@ public class MapsActivity extends ActionBarActivity implements
         mapUiSetting(true);
         locationProvider = new LocationProvider(this, mMap, editor, sharedpreferences);
         locationProvider.getMyLocaton();
+
+        /*Intent intent= new Intent(MapsActivity.this, DriverLocation.class);
+        startService(intent);*/
 
         /*Intent in = new Intent(MapsActivity.this, HireCallService.class);
         startService(in);*/
@@ -185,8 +198,10 @@ public class MapsActivity extends ActionBarActivity implements
 
     private void setButtonStatus() {
         if (isOnline) {
+            cancelAlarmManager();
             setOfflineButton();
         } else {
+            startAlarmManager();
             setOnlineButton();
         }
     }
@@ -201,6 +216,32 @@ public class MapsActivity extends ActionBarActivity implements
         btStatus.setButtonColor(this.getResources().getColor(R.color.green_500));
         btStatus.setShadowColor(this.getResources().getColor(R.color.green_900));
         btStatus.setText(this.getResources().getString(R.string.offline));
+    }
+
+    /*******
+     * Starting Alarm Manager
+     ******/
+    private void startAlarmManager() {
+        Log.i("Service", "startAlarmManager");
+        Context context = getBaseContext();
+        alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        Intent driverLocIntent = new Intent(context, DriverLocationReciever.class);
+        pendingIntent = PendingIntent.getBroadcast(context, 0, driverLocIntent, 0);
+
+        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                SystemClock.elapsedRealtime(),
+                1000 * 30, // 30 sec
+                pendingIntent);
+    }
+
+    /*******
+     * Stopping Alarm Manager
+     ******/
+    private void cancelAlarmManager() {
+        Log.i("Service", "cancelAlarmManager");
+        if(alarmManager != null) {
+            alarmManager.cancel(pendingIntent);
+        }
     }
 
     /******

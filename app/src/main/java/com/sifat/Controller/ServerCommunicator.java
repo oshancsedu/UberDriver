@@ -8,6 +8,12 @@ import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.sifat.Singleton.VolleySingleton;
 import com.sifat.Utilities.LoopjHttpClient;
 import com.loopj.android.http.*;
 import com.sifat.uberdriver.CompleteProfileActivity;
@@ -20,6 +26,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.StringTokenizer;
 
 import cz.msebera.android.httpclient.Header;
@@ -223,11 +231,50 @@ public class ServerCommunicator {
         });
     }
 
+    public void sendDriverLocation(final double lat, final double lng) {
+
+        String url = "http://khep.finder-lbs.com:8001/taxilocation/taxilocationdetail/2/";
+
+        StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ) {
+
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("driver", ""+1);
+                params.put("lat", ""+lat);
+                params.put("lat", ""+lng);
+                return params;
+            }
+        };
+
+        RequestQueue queue = VolleySingleton.getInstance().getRequestQueue();
+        queue.add(putRequest);
+
+    }
+
     public void endRide(float rating,String userId)
     {
         final RequestParams requestParams = new RequestParams();
         requestParams.put(USER_RATING,rating);
-        requestParams.put(USER_REGISTRATION_ID,userId);
+        requestParams.put(USER_REGISTRATION_ID, userId);
 
         final String endRideWebsite= END_RIDE_WEBSITE;
         LoopjHttpClient.post(endRideWebsite, requestParams, new AsyncHttpResponseHandler() {
@@ -246,8 +293,6 @@ public class ServerCommunicator {
                 showToast(context, response);
             }
         });
-
-
     }
 
     public void logout(String gcmRegID, String userRegID) {
@@ -379,7 +424,7 @@ public class ServerCommunicator {
             showToast(context,res);
 
         } catch (JSONException e) {
-            Log.i(LOG_TAG_LOGIN,"Error");
+            Log.i(LOG_TAG_LOGIN, "Error");
         }
     }
 

@@ -46,6 +46,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.7.0'
     compile 'com.android.support:multidex:1.0.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.github.johnkil.android-robototextview:robototextview:2.4.3'
 
 }
