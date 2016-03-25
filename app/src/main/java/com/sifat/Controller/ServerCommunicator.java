@@ -235,6 +235,10 @@ public class ServerCommunicator {
 
         String url = "http://khep.finder-lbs.com:8001/taxilocation/taxilocationdetail/2/";
 
+        final String access_token = sharedPreferences.getString(SERVER_ACCESS_TOKEN,"f19d5e984bfd4d7a13373a771125c09c1fe31c18");
+        final String userId = sharedPreferences.getString(USER_REGISTRATION_ID,"1");
+        Log.i("REQ", "User ID: "+userId);
+
         StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
                 new Response.Listener<String>()
                 {
@@ -242,6 +246,7 @@ public class ServerCommunicator {
                     public void onResponse(String response) {
                         // response
                         Log.d("Response", response);
+                        Log.i("REQ",response);
                     }
                 },
                 new Response.ErrorListener()
@@ -250,6 +255,7 @@ public class ServerCommunicator {
                     public void onErrorResponse(VolleyError error) {
                         // error
                         Log.d("Error.Response", error.toString());
+                        Log.i("REQ", error.toString());
                     }
                 }
         ) {
@@ -258,9 +264,10 @@ public class ServerCommunicator {
             protected Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("driver", ""+1);
+                params.put("driver", userId);
                 params.put("lat", ""+lat);
-                params.put("lat", ""+lng);
+                params.put("lon", ""+lng);
+                params.put("auth_token",access_token);
                 return params;
             }
         };
