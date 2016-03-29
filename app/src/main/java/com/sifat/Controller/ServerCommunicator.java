@@ -147,7 +147,6 @@ public class ServerCommunicator {
                 LoopjHttpClient.debugLoopJ(LOG_TAG_SIGNUP, "sendLocationDataToWebsite - failure", signupWebsite, requestParams, responseBody, headers, statusCode, error, context);
                 showToast(context, "Error!");
             }
-
         });
     }
 
