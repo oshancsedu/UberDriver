@@ -206,9 +206,11 @@ public class ServerCommunicator {
     public void acceptRide() {
 
         String accessToken = sharedPreferences.getString(SERVER_ACCESS_TOKEN,"");
+        int userId = sharedPreferences.getInt(USER_REGISTRATION_ID,0);
         final String acceptRideWebsite = ACCEPT_RIDE_WEBSITE;
         final RequestParams requestParams = new RequestParams();
         requestParams.put(SERVER_ACCESS_TOKEN, accessToken);
+        requestParams.put(USER_REGISTRATION_ID,userId);
 
         Log.i("REQ", acceptRideWebsite);
 
@@ -234,9 +236,9 @@ public class ServerCommunicator {
 
         String url = "http://khep.finder-lbs.com:8001/taxilocation/taxilocationdetail/2/";
 
-        final String access_token = sharedPreferences.getString(SERVER_ACCESS_TOKEN,"f19d5e984bfd4d7a13373a771125c09c1fe31c18");
+        final String access_token = sharedPreferences.getString(SERVER_ACCESS_TOKEN, "f19d5e984bfd4d7a13373a771125c09c1fe31c18");
         final String userId = sharedPreferences.getString(USER_REGISTRATION_ID,"1");
-        Log.i("REQ", "User ID: "+userId);
+        Log.i("REQ", "User ID: " + userId);
 
         StringRequest putRequest = new StringRequest(Request.Method.PUT, url,
                 new Response.Listener<String>()
@@ -276,11 +278,41 @@ public class ServerCommunicator {
 
     }
 
+
+    public void startRide(String userId) {
+        String accessToken= sharedPreferences.getString(SERVER_ACCESS_TOKEN,"");
+        RequestParams requestParams = new RequestParams();
+        requestParams.put(SERVER_ACCESS_TOKEN,accessToken);
+        requestParams.put(USER_REGISTRATION_ID,userId);
+
+        final String rideStartWebsite = RIDE_START_WEBSITE;
+        Toast.makeText(context,rideStartWebsite,Toast.LENGTH_SHORT).show();
+
+        LoopjHttpClient.post(rideStartWebsite, requestParams, new AsyncHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                Log.i(LOG_TAG_LOGIN, new String(responseBody));
+                editor.putBoolean(IS_ON_RIDE, true);
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                Log.i(LOG_TAG_LOGIN, new String(responseBody));
+            }
+        });
+    }
+
+
     public void endRide(float rating,String userId)
     {
+        String access_token = sharedPreferences.getString(SERVER_ACCESS_TOKEN,"");
+        int driverId= sharedPreferences.getInt(USER_REGISTRATION_ID,0);
         final RequestParams requestParams = new RequestParams();
         requestParams.put(USER_RATING,rating);
         requestParams.put(USER_REGISTRATION_ID, userId);
+        requestParams.put(SERVER_ACCESS_TOKEN,access_token);
+        requestParams.put(USER_REGISTRATION_ID,driverId);
 
         final String endRideWebsite= END_RIDE_WEBSITE;
         LoopjHttpClient.post(endRideWebsite, requestParams, new AsyncHttpResponseHandler() {
@@ -348,14 +380,13 @@ public class ServerCommunicator {
 
     private void saveUserInfo(JSONObject userInfo) {
         try {
-            Log.e("JSON", "1");
+
+            editor.putInt(USER_REGISTRATION_ID,userInfo.getInt(USER_REGISTRATION_ID));
             editor.putString(USER_RATING, userInfo.getString(USER_RATING));
             editor.putString(USER_BALANCE, userInfo.getString(USER_BALANCE));
-
             editor.putString(USER_PRO_PIC_URL, userInfo.getString(USER_PRO_PIC_URL));
             editor.putString(USER_PROFESSION, userInfo.getString(USER_PROFESSION));
             //editor.putString(USER_NID, userInfo.getString("userNID"));
-            Log.e("JSON", "2");
             editor.putString(USER_EMAIL, userInfo.getString(USER_EMAIL));
             editor.putString(USER_BDAY, userInfo.getString(USER_BDAY));
             editor.putString(USER_GENDER, userInfo.getString(USER_GENDER));
@@ -363,8 +394,7 @@ public class ServerCommunicator {
             editor.putString(USER_ADDRESS, userInfo.getString(USER_ADDRESS));
             editor.putString(USER_FNAME, userInfo.getString(USER_FNAME));
             editor.putString(USER_LNAME, userInfo.getString(USER_LNAME));
-            editor.putString(USER_NAME, userInfo.getString(USER_FNAME) + " " + userInfo.getString(USER_LNAME));
-            Log.e("JSON", "3");
+            editor.putString(USER_NAME, userInfo.getString(CONNECTED_USER_NAME));
             //editor.putString(USER_REGISTRATION_ID, userInfo.getString("id"));
             editor.commit();
 
@@ -395,7 +425,20 @@ public class ServerCommunicator {
 
         try {
             JSONObject response = new JSONObject(res);
-            String status = response.getString("status");
+            JSONObject userProfileInfo = response.getJSONObject("userprofiles");
+
+            if(userProfileInfo==null)
+            {
+                changeActivity(CompleteProfileActivity.class);
+                return;
+            }
+            else
+            {
+                saveUserInfo(response);
+                changeActivity(MapsActivity.class);
+            }
+
+            /*String status = response.getString("status");
             if(status.equalsIgnoreCase(USER_STATUS_1))
             {
                 changeActivity(CompleteProfileActivity.class);
@@ -412,7 +455,7 @@ public class ServerCommunicator {
             else if(status.equalsIgnoreCase(USER_STATUS_4))
             {
                 changeActivity(UploadNIDInfoActivity.class);
-            }
+            }*/
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.gcm.GoogleCloudMessaging;
+import com.sifat.uberdriver.ShowGCMIDActivity;
 
 import java.io.IOException;
 
@@ -26,7 +27,10 @@ public class GcmRegFetcher {
 
     public void fetchGcmRegNumber(Context context, Intent intent) {
         //serverCommunicator = new ServerCommunicator(context);
-        this.intent = intent;
+        //this.intent = intent;
+
+        this.intent = new Intent(context, ShowGCMIDActivity.class);
+
         Log.i(LOG_TAG_GCM, "gcm fetching");
         sharedPreferences = getSharedPref(context);
         registerInBackground(context);

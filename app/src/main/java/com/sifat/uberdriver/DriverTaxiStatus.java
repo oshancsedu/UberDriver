@@ -64,11 +64,12 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
     private Toolbar toolbar;
     private UserRating userRating;
     private String userName, userId;
-    private FloatingActionButton fbReleaseTaxi;
+    private FloatingActionButton fbReleaseTaxi,fbWaitingState;
     private NotificationManager mNotificationManager;
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
     private ServerCommunicator serverCommunicator;
+    private boolean isOnride;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +121,26 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
         userRating = new UserRating();
         fbReleaseTaxi = (FloatingActionButton) findViewById(R.id.fbReleaseTaxi);
         fbReleaseTaxi.setOnClickListener(this);
+        fbWaitingState = (FloatingActionButton) findViewById(R.id.fbWaitingState);
+        fbWaitingState.setOnClickListener(this);
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isOnride = sharedPreferences.getBoolean(IS_ON_RIDE,false);
+
+        if(isOnride)
+        {
+            fbReleaseTaxi.setVisibility(View.VISIBLE);
+            fbWaitingState.setVisibility(View.INVISIBLE);
+        }
+        else
+        {
+            fbReleaseTaxi.setVisibility(View.INVISIBLE);
+            fbWaitingState.setVisibility(View.VISIBLE);
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -225,7 +244,14 @@ public class DriverTaxiStatus extends ActionBarActivity implements RouteApi,
 
     @Override
     public void onClick(View view) {
-        userRating.show(getFragmentManager(), "Rate the Driver");
+        int id = view.getId();
+        if (id==R.id.fbReleaseTaxi)
+            userRating.show(getFragmentManager(), "Rate the Driver");
+        else if(id==R.id.fbWaitingState){
+            fbReleaseTaxi.setVisibility(View.VISIBLE);
+            fbWaitingState.setVisibility(View.INVISIBLE);
+            serverCommunicator.startRide(userId);
+        }
     }
 }
 

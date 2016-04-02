@@ -51,25 +51,27 @@ public class CommonUtilities {
     public static final String USER_RATING = "userRating";
     public static final String USER_BALANCE = "userBalance";
     public static final String USER_PROFESSION = "userProfession";
-    public static final String USER_PRO_PIC_URL = "proPicURL";
+    public static final String USER_PRO_PIC_URL = "profile_picture";
     public static final String USER_NID = "userNID";
-    public static final String USER_REGISTRATION_ID = "userRegID";
+    public static final String USER_REGISTRATION_ID = "id";
     public static final String USER_FB_INFO = "userFbInfo";
     public static final String USER_NAME = "username";
+    public static final String CONNECTED_USER_NAME = "connected_user";
     public static final String USER_EMAIL = "email";
     public static final String USER_PROFESSON = "profession";
     public static final String USER_FACEBOOK_ID = "userId";
     public static final String USER_ADDRESS = "address";
-    public static final String USER_BDAY = "bday";
-    public static final String USER_MOBILE_NUM = "mobileNum";
-    public static final String USER_FNAME = "fname";
-    public static final String USER_LNAME = "lname";
+    public static final String USER_BDAY = "date_of_birth";
+    public static final String USER_PHONE_NUM = "phone";
+    public static final String USER_MOBILE_NUM = "mobile";
+    public static final String USER_FNAME = "first_name";
+    public static final String USER_LNAME = "last_name";
     public static final String USER_GENDER = "gender";
     public static final String USER_PASSWORD = "password";
-    public static final String USER_N_ID = "nationalID";
+    public static final String USER_N_ID = "nid";
     public static final String USER_PRO_PIC = "profile_Picture";
     public static final String USER_NID_PIC = "nidPic";
-    public static final String USER_TYPE_STRING = "userType";
+    public static final String USER_TYPE_STRING = "user_type";
     public static final String USER_TYPE = "Driver";
     public static final String SERVER_ACCESS_TOKEN="serverAccessToken";
     public static final String USER_STATUS_1="not completed";
@@ -97,6 +99,7 @@ public class CommonUtilities {
     public static final String USER_STATUS_WEBSITE="http://aimsil.com/uber/userInfo.php";
     public static final String ACCEPT_RIDE_WEBSITE ="http://aimsil.com/uber/acceptRide.php";
     public static final String END_RIDE_WEBSITE="http://aimsil.com/uber/endRide.php";
+    public static final String RIDE_START_WEBSITE = "http://aimsil.com/uber/StartRide.php";
 
 
     ///GCM Registration number
@@ -106,6 +109,11 @@ public class CommonUtilities {
     public static String signup_fname, signup_lname, signup_bday, signup_address, signup_email, profileImgUrl,
             signup_mobile, signup_password, signup_gender, signup_confirmPass, signup_profession, signup_NID,signup_username;
     public static Bitmap proPic, NDIPic;
+
+
+    //pref Tags
+    public static final String IS_ON_RIDE="isOnRide";
+
 
     public static SharedPreferences getSharedPref(Context context)
     {

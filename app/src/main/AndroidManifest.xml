@@ -52,6 +52,8 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".ShowGCMIDActivity"/>
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
